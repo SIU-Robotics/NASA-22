@@ -4,6 +4,7 @@ byte data_to_echo = 0;
 void setup() 
 {
   Serial.begin(9600);
+  
   Wire.begin(SLAVE_ADDRESS);
   Wire.onReceive(receiveData);
   Wire.onRequest(sendData);
