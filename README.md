@@ -3,6 +3,8 @@ Pogger auger dawgers on the moon
 
 #Thanks for reading this readme.
 
+Jared was here.
+
 #I2C notes from Thomas:
 
 #I2C is a method of communication between the Raspberry Pi and the Arduino. It uses wires and some kind of protocol that allows the Pi to send up to 16 different hexa
