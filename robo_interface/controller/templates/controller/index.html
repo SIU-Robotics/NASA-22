@@ -8,22 +8,28 @@
     <body>
         <div id="wrapper">
 
-            <h1 class="h1">Testing site</h1>
-            <label for="val1">Number 1</label>
-            <input class="form-control" id="val1" title="val1" type="number">
+            <h1 class="h1">Toggle light over I2C</h1>
+            <br><br>
+            <div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="light_toggle" id="radio_on">
+                    <label class="form-check-label" for="radio_on">Turn On</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="light_toggle" id="radio_off">
+                    <label class="form-check-label" for="radio_off">Turn Off</label>
+                </div>
+            </div>
             <br>
-            <label for="val2">Number 2</label>
-            <input class="form-control" id="val2" title="val2" type="number">
+            <button class="btn btn-primary" id="light_button">Send command</button>
+            <br><br>
+            <h2>Video Stream:</h2>
             <br>
-            <button class="btn btn-primary" id="test_button">Press me</button>
-            <br>
-            <p>
-                The answer is: <span id="answer">0</span>
-            </p>
+            <iframe src="{{ video_url }}" width="640" height="480"></iframe>
         </div>
     </body>
 
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-    <script src="{% static 'script_file.js' %}"></script>
+    <script src="{% static 'django_interface.js' %}"></script>
 </html>
 
