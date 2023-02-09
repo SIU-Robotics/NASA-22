@@ -1,17 +1,16 @@
 import cv2
-import time
 import threading
 
-class VideoCamera(object):
+class VideoCamera(threading.Thread):
+
     def __init__(self):
-        try:
-            self.video = cv2.VideoCapture(0)
-            (self.grabbed, self.frame) = self.video.read()
-            threading.Thread(target=self.update, args=()).start()
-        except Exception as e:
-            raise Exception("Camera in use")
-    def __del__(self):
-        print("released!!\n\n")
+        super().__init__()
+        self._stop_event = threading.Event()
+        self.video = cv2.VideoCapture(0)
+        (self.grabbed, self.frame) = self.video.read()
+            
+    def stop(self):
+        self._stop_event.set()
         self.video.release()
 
     def get_frame(self):
@@ -19,23 +18,19 @@ class VideoCamera(object):
         _, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
 
-    def update(self):
-        while True:
-            (self.grabbed, self.frame) = self.video.read()
+    def run(self):
+        while not self._stop_event.is_set():
+            if (not self.response.closed):
+                (self.grabbed, self.frame) = self.video.read()
+            else:
+                self.stop()
 
-def gen(camera):
-    while True:
+def gen(cam):
+    while not cam._stop_event.is_set():
         try:
-            frame = camera.get_frame()
-            yield(b'--frame\r\n'
+            frame = cam.get_frame()
+            yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         except Exception as e:
-            raise Exception("Camera in use")
-
-
-
-def close_camera(cam, response):
-    while response and not response.closed:
-        time.sleep(1)
-    if cam:
-        cam.video.release()
+            cam.stop()
+            raise Exception("Frame gen failed: Camera in use")

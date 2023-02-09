@@ -12,7 +12,7 @@ function toggle_light() {
     }
 
     $.ajax({
-        url: '/controller/toggle_light/',
+        url: '/controller/send_command/',
         type: 'POST',
         data: JSON.stringify(data),
         success: successful_response,

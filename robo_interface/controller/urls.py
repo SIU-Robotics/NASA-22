@@ -5,8 +5,8 @@ from . import views
 urlpatterns = [
 	path('', views.index, name='index'),
 	path('camera/', views.livefe, name='live_camera'),
-	path('toggle_light/', views.toggle_light, name='toggle_light'),
-	path('test/', views.test, name='test'),
-	path('test_page/', views.test_page, name='test_page')
+	path('send_command/', views.robot_control, name='control_robot'),
+	# path('test/', views.test, name='test'),
+	# path('test_page/', views.test_page, name='test_page')
 ]
 

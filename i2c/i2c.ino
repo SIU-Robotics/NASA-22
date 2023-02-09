@@ -1,22 +1,68 @@
 #include <Wire.h>
+
 #define SLAVE_ADDRESS 0x08
-byte data_to_echo = 0;
 
-boolean command_finish = true;
+// Movement bytes
+#define MOVEMENT 0x00
+#define FORWARD 0x00
+#define BACKWARD 0x01
 
-void receiveData(int bytecount)
+// Claw bytes
+#define CLAW 0x01
+
+bool command_finish = true;
+
+void receiveData(int byteCount)
 {
   Serial.print("BYTE COUNT: ");
-  Serial.println(bytecount);
-  for (int i = 0; i < bytecount; i++) {
-    data_to_echo = Wire.read();
-    if(data_to_echo == 'f'){
-      Serial.println(data_to_echo == 'f');
-    } else {
-      Serial.println("Not correct");
-    }
-    
+  Serial.println(byteCount);
+  int incomingData[byteCount];
+  for (int i = 0; i < byteCount; i++) {
+    incomingData[i] = Wire.read();
   }
+
+  switch(incomingData[0]) {
+    case MOVEMENT:
+      // there will be a direction and a speed
+      Serial.println("Type: Movement")
+      if (incomingData[1] == FORWARD) {
+        Serial.println("Direction: Forward");
+      }
+      else if (incomingData[1] == BACKWARD) {
+        Serial.println("Direction: Backward");
+      }
+      else {
+        Serial.println("Direction: Unknown")
+      }
+
+      Serial.println("Speed: " + incomingData[2])
+      
+      break;
+    case CLAW:
+      // there will be something idk
+      Serial.print("Type: Claw")
+
+      break;
+    default:
+      break;
+
+  }
+  switch(incomingData[1]) {
+    case MOVEMENT:
+      // there will be a direction and a speed
+      Serial.print("Type: Movement")
+      
+      break;
+    case CLAW:
+      // there will be something idk
+      Serial.print("Claw")
+
+      break;
+    default:
+      break;
+
+  }
+
 }
 
 void sendData()
