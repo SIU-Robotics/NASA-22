@@ -2,19 +2,19 @@ $("#light_button").click(toggle_light);
 
 function toggle_light() {
 
-    let status;
+    let data = new dataObj();
 
     if ($("#radio_on").is(":checked")) {
-        status = "on";
+        data.status = "on";
     }
     else {
-        status = "off";
+        data.status = "off";
     }
 
     $.ajax({
         url: '/controller/toggle_light/',
         type: 'POST',
-        data: {"light": status},
+        data: JSON.stringify(data),
         success: successful_response,
         error: error_response,
     });
@@ -26,4 +26,8 @@ function successful_response(data) {
 
 function error_response(error_json) {
     alert("Error:" + error_json.responseJSON.error);
+}
+
+function dataObj() {
+    this.status;
 }
