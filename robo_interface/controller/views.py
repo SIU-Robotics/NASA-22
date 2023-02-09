@@ -14,12 +14,10 @@ def livefe(request):
     try:
         camera = VideoCamera()
         response = StreamingHttpResponse(gen(camera), content_type="multipart/x-mixed-replace;boundary=frame")
-        print("before start")
         response['Cache-Control'] = 'no-cache'
         camera.response = response
         camera.start()
     except Exception as e:
-        print(e)
         response = JsonResponse({"error": "true"})
         response.status_code = 500
     return response

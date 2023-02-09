@@ -10,26 +10,30 @@
     </head>
     <body>
         <div id="wrapper">
-
-            <h1 class="h1">Toggle light over I2C</h1>
-            <br><br>
-            <div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="light_toggle" id="radio_on">
-                    <label class="form-check-label" for="radio_on">Turn On</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="light_toggle" id="radio_off">
-                    <label class="form-check-label" for="radio_off">Turn Off</label>
-                </div>
-            </div>
+            <h1 class="h1">SIU NASA Control Panel</h1><br>
+            <h2 class="h2">Movement</h2>
             <br>
-            <button class="btn btn-primary" id="light_button">Send command</button>
+            <div class="input-group mb-3">
+                <select class="form-select">
+                    <option selected>Direction...</option>
+                    <option value="forward">Forward</option>
+                    <option value="backward">Backward</option>
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="" min="0" max="127">Speed</span>
+                <input type="number" class="form-control" placeholder="0-127">
+            </div>
+            <button class="btn btn-primary" id="light_button">Move</button>
+            <br><br>
+            <h1 class="h1">Claw</h1>
+            <button class="btn btn-primary" id="light_button">Grab</button>
             <br><br>
             <h2>Video Stream:</h2>
             <br>
             <div>
-                <button class="btn btn-secondary" id="camera_btn">Click to request camera</button>
+                <button class="btn btn-secondary" id="camera_btn">Click to toggle camera</button>
+                <span id="video"></span>
             </div>
         </div>
     </body>
