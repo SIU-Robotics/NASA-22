@@ -4,11 +4,11 @@
 
 // Movement bytes
 #define MOVEMENT 0x00
-#define FORWARD 0x00
-#define BACKWARD 0x01
+#define FORWARD 0x01
+#define BACKWARD 0x02
 
 // Claw bytes
-#define CLAW 0x01
+#define CLAW 0x03
 
 bool command_finish = true;
 

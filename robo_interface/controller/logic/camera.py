@@ -1,5 +1,6 @@
 import cv2
 import threading
+import time
 
 class VideoCamera(threading.Thread):
 
@@ -22,6 +23,7 @@ class VideoCamera(threading.Thread):
         while not self._stop_event.is_set():
             if (not self.response.closed):
                 (self.grabbed, self.frame) = self.video.read()
+                time.sleep(0.1)
             else:
                 self.stop()
 

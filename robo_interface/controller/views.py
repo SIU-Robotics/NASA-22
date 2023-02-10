@@ -32,12 +32,12 @@ def robot_control(request):
         payload = json.loads(request.body.decode())
 
         robot = I2CBridge()
-
+        print(payload)
         # check which type of command we're dealing with
-        if (payload.get("movement") == "true"):
-            robot.move(payload.get("direction"), payload.get("speed"))
+        if (payload.get("type") == "movement"):
+            robot.move(payload.get("direction"), int(payload.get("speed")))
 
-        elif (payload.get("claw") == "true"):
+        elif (payload.get("type") == "claw"):
             robot.grab()
 
         else:

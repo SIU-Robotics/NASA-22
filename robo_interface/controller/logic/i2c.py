@@ -2,11 +2,11 @@ from smbus2 import SMBus
 
 # Movement variables
 movement = 0x00
-forward = 0x00
-backward = 0x01
+forward = 0x01
+backward = 0x02
 
 # Claw variables
-claw = 0x01
+claw = 0x03
 
 class I2CBridge():
 
@@ -21,9 +21,9 @@ class I2CBridge():
             raise Exception("Excessive speed!")
         match direction:
             case 'forward':
-                self.bus.write_i2c_block_data(self.DEVICE_ADDR, 0x3, [movement, forward, hex(speed)])
+                self.bus.write_i2c_block_data(self.DEVICE_ADDR, 0x3, [movement, forward, speed])
             case 'backward':
-                self.bus.write_i2c_block_data(self.DEVICE_ADDR, 0x3, [movement, backward, hex(speed)])
+                self.bus.write_i2c_block_data(self.DEVICE_ADDR, 0x3, [movement, backward, speed])
             case _:
                 raise Exception("Unknown movement command")
 
