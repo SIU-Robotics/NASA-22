@@ -1,3 +1,7 @@
+#include <Wire.h>
+
+#define SLAVE_ADDRESS 0x08
+
 /*
 Below is the relay control functions and button panel for 
 controling the: Drill direction, Drill speed, and Tube direction.
@@ -39,6 +43,20 @@ One second is 1000 ms
 0 = Lo Lo Stop
 */
 
+int byte_to_use[3];
+bool command_finished = true;
+
+void receiveData(int byteCount)
+{
+  Serial.print("BYTE COUNT: ");
+  Serial.println(byteCount);
+  int incomingData[byteCount];
+
+  for (int i = 0; i < byteCount; i++) {
+    byte_to_use[i] = Wire.read();
+  }
+}
+
 
 void setup(){
   //Setting up control pins for relays, buttons, and limit switches
@@ -75,6 +93,8 @@ void setup(){
 
   //For debugging (See output)
   Serial.begin( 9600 );
+  Wire.begin(SLAVE_ADDRESS);
+  Wire.onReceive(receiveData);
 }
 
 
@@ -121,6 +141,7 @@ This relay board has inverted inputs
 int drillForward(){
   digitalWrite(IN4, HIGH);    
   digitalWrite(IN3, LOW);
+  Serial.println("INSIDE DRILL FORWARD");
 }
 int drillBackward(){
   digitalWrite(IN3, HIGH);
@@ -158,14 +179,15 @@ Switch case function for drill state
 Default is off
 */
 int drillControl(){
-  switch(drillState){
-    case 0:
+  switch(byte_to_use[1]){
+    case '0':
       drillForward();
+      Serial.println("DRILL FORWARD");
       break;
-    case 1:
+    case '1':
       drillBackward();
       break;
-    case 2:
+    case '2':
       drillStop();
       break;
     default:
@@ -200,15 +222,24 @@ Reading drill button press
 3. Stop
 */
 int drillRead(){
-  if (digitalRead(butt4) == LOW){
+  if(byte_to_use[1] == '4'){
     drillState = 0;
   }
-  if (digitalRead(butt5) == LOW){
+  if(byte_to_use[1] == '5'){
     drillState = 1;
   }
-  if (digitalRead(butt6) == LOW){
+  if(byte_to_use[1] == '6'){
     drillState = 2;
   }
+  // if (digitalRead(butt4) == LOW){
+  //   drillState = 0;
+  // }
+  // if (digitalRead(butt5) == LOW){
+  //   drillState = 1;
+  // }
+  // if (digitalRead(butt6) == LOW){
+  //   drillState = 2;
+  // }
 }
 
 /*
@@ -259,19 +290,94 @@ int limitSwitches(){
 }
 
 void loop(){
-  limitSwitches();
-  tubeControl();
-  drillControl();
-  tubeRead();
-  drillRead();
-  speedRead();
+  // limitSwitches();
+  // tubeControl();
+  // drillControl();
+  // tubeRead();
+  // drillRead();
+  // speedRead();
 
 
   if (digitalRead(limitSwitchForward) == HIGH){
-    Serial.print("High");
+    // Serial.print("High");
   }
   if (digitalRead(limitSwitchForward) == LOW){
-    Serial.print("Low");
+    // Serial.print("Low");
   }
-  Serial.println(pressedForward);
+  // Serial.println(pressedForward);
+
+  if(command_finished){
+    if(byte_to_use[0] == 'g'){
+      limitSwitches();
+      Serial.println("Running LIMIT SWITCHES");      
+    } else if(byte_to_use[0] == 'C'){
+      tubeControl();
+      Serial.println("Running TUBE CONTROL");
+    } else if(byte_to_use[0] == 'd'){
+      Serial.println("Running Drill Read");
+      Serial.println("Running Drill Control");
+      drillRead();
+      drillControl();
+    }
+    else if(byte_to_use[0] == 's'){
+      speedRead();
+      Serial.println("Running Speed Read");
+    }
+//     if(data_to_echo == 'f') // Forward
+//     {
+//       Serial.println("Forward");
+//     } else if(data_to_echo == 'b')
+//     {
+//       Serial.println("Backward");
+//     } else if(data_to_echo == 'l')
+//     {
+//       Serial.println("Left");
+//     } else if(data_to_echo =='r'){
+//       Serial.println("Right");
+//     }
+//     else if(data_to_echo == 's')
+//     {
+//       Serial.println("Uni Stop");
+//     } else if(data_to_echo == 'F')
+//     {
+//       Serial.println("Timed F");
+//     } else if(data_to_echo =='B'){
+//       Serial.println("Timed Back");
+//     } else if(data_to_echo == 'L')
+//     {
+//       Serial.println("Timed Left");
+//     } else if(data_to_echo == 'R')
+//     {
+//       Serial.println("Timed Right");
+//     } else if(data_to_echo =='p')
+//     {
+//       Serial.println("Auger Foward");
+//     } else if(data_to_echo == 'o')
+//     {
+//       Serial.println("Auger Backward");
+//     } else if(data_to_echo == 'S')
+//     {
+//       Serial.println("Auger Stop");
+//     } else if(data_to_echo =='c')
+//     {
+//       Serial.println("Drill CC");
+//     } else if(data_to_echo == 'w')
+//     {
+//       Serial.println("Drill CCW");
+//     } else if(data_to_echo == 'D')
+//     {
+//       Serial.println("Drill Stop");
+//     } else if(data_to_echo =='u')
+//     {
+//       Serial.println("Lin Act Up");
+//     } else if(data_to_echo == 'd')
+//     {
+//       Serial.println("Lin Act Down");
+//     } else if(data_to_echo == 'A')
+//     {
+//       Serial.println("Lin Act Stop");
+//     } else {
+//       Serial.println("No Command");
+//     }
+  }
 }
