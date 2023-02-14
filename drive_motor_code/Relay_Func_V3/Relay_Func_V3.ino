@@ -43,7 +43,7 @@ One second is 1000 ms
 0 = Lo Lo Stop
 */
 
-int byte_to_use[3];
+byte byte_to_use[3];
 bool command_finished = true;
 
 void receiveData(int byteCount)
@@ -54,6 +54,7 @@ void receiveData(int byteCount)
 
   for (int i = 0; i < byteCount; i++) {
     byte_to_use[i] = Wire.read();
+    Serial.println(byte_to_use[i]);
   }
 }
 
@@ -112,18 +113,21 @@ Tube directionality function
 3. Tube stop
 */
 int tubeForward(){
+  Serial.println("tube forward");
   int z = 10; 
   digitalWrite(IN2, LOW);  //Low must always come before high
   digitalWrite(IN1, HIGH);
   return z;
 }
 int tubeBackward(){
+  Serial.println("tube backward");
   int z = 01;
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
   return z;
 }
 int tubeStop(){
+  Serial.println("tube stop");
   int z = 0;
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
@@ -139,15 +143,18 @@ This relay board has inverted inputs
 3. Drill stop
 */
 int drillForward(){
+  Serial.println("drill foward");
   digitalWrite(IN4, HIGH);    
   digitalWrite(IN3, LOW);
   Serial.println("INSIDE DRILL FORWARD");
 }
 int drillBackward(){
+  Serial.println("drill foward");
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
 }
 int drillStop(){
+  Serial.println("drill stop");
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, HIGH);
 }
@@ -158,14 +165,15 @@ Switch case function for tube state
 Default is off
 */
 int tubeControl(){
+  Serial.println("INSIDE TUBECONTROL");
   switch(tubeState){
-    case 0:
+    case '0':
       tubeForward();
       break;
-    case 1:
+    case '1':
       tubeBackward();
       break;
-    case 2:
+    case '2':
       tubeStop();
       break;
     default:
@@ -179,7 +187,8 @@ Switch case function for drill state
 Default is off
 */
 int drillControl(){
-  switch(byte_to_use[1]){
+  Serial.println("INSIDE DRILL CONTROL");
+  switch(drillState){
     case '0':
       drillForward();
       Serial.println("DRILL FORWARD");
@@ -203,15 +212,26 @@ Reading tube button press
 3. Stop
 */
 int tubeRead(){
-  if (digitalRead(butt1) == LOW){
+  if(byte_to_use[1] == '4'){
     tubeState = 0;
   }
-  if (digitalRead(butt2) == LOW){
+  if(byte_to_use[1] == '5'){
     tubeState = 1;
   }
-  if (digitalRead(butt3) == LOW){
+  if(byte_to_use[1] == '6'){
     tubeState = 2;
-  }
+  }  
+  Serial.print("tubeState: ");
+  Serial.println(tubeState);
+  // if (digitalRead(butt1) == LOW){
+  //   tubeState = 0;
+  // }
+  // if (digitalRead(butt2) == LOW){
+  //   tubeState = 1;
+  // }
+  // if (digitalRead(butt3) == LOW){
+  //   tubeState = 2;
+  // }
 }
 
 /*
@@ -231,6 +251,8 @@ int drillRead(){
   if(byte_to_use[1] == '6'){
     drillState = 2;
   }
+  Serial.print("drillState: ");
+  Serial.println(drillState);
   // if (digitalRead(butt4) == LOW){
   //   drillState = 0;
   // }
@@ -290,13 +312,12 @@ int limitSwitches(){
 }
 
 void loop(){
-  // limitSwitches();
+  limitSwitches();
   // tubeControl();
   // drillControl();
   // tubeRead();
   // drillRead();
   // speedRead();
-
 
   if (digitalRead(limitSwitchForward) == HIGH){
     // Serial.print("High");
@@ -308,9 +329,9 @@ void loop(){
 
   if(command_finished){
     if(byte_to_use[0] == 'g'){
-      limitSwitches();
-      Serial.println("Running LIMIT SWITCHES");      
+      // Serial.println("Running LIMIT SWITCHES");      
     } else if(byte_to_use[0] == 'C'){
+      tubeRead();
       tubeControl();
       Serial.println("Running TUBE CONTROL");
     } else if(byte_to_use[0] == 'd'){
@@ -319,10 +340,10 @@ void loop(){
       drillRead();
       drillControl();
     }
-    else if(byte_to_use[0] == 's'){
-      speedRead();
-      Serial.println("Running Speed Read");
-    }
+    // else if(byte_to_use[0] == 's'){
+    //   speedRead();
+    //   Serial.println("Running Speed Read");
+    // }
 //     if(data_to_echo == 'f') // Forward
 //     {
 //       Serial.println("Forward");
