@@ -1,6 +1,7 @@
 from smbus2 import SMBus
 
-class I2CBridge():
+
+class I2CBridge:
 
     def __init__(self):
 
@@ -31,9 +32,8 @@ class I2CBridge():
 
         if direction not in direction_keys:
             raise Exception("Unknown movement command")
-            
-        if (speed > 127):
+
+        if speed > 127:
             raise Exception("Excessive speed!")
 
         self.bus.write_i2c_block_data(self.DEVICE_ADDR, self.MOVEMENT, [direction_keys[direction], speed])
-        

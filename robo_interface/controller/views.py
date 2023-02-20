@@ -6,9 +6,10 @@ from django.views.decorators.csrf import csrf_exempt
 from .logic.i2c import I2CBridge
 from .logic.camera import VideoCamera, gen
 
+
 # Live camera feed view
 @gzip.gzip_page
-def livefe(request):
+def live_feed(request):
     try:
         camera = VideoCamera()
         response = StreamingHttpResponse(gen(camera), content_type="multipart/x-mixed-replace;boundary=frame")
@@ -19,6 +20,7 @@ def livefe(request):
         response = JsonResponse({"error": e})
         response.status_code = 500
     return response
+
 
 # View called by index page using jQuery AJAX
 @csrf_exempt
@@ -38,11 +40,12 @@ def robot_control(request):
 
     return response
 
+
 # WIP diagnostic view
 def get_status(request):
     try:
         robot = I2CBridge()
-        if(robot.status() == 0):
+        if robot.status() == 0:
             response = JsonResponse({"success": "true"})
     except Exception as e:
         print(e)
