@@ -1,14 +1,12 @@
 import json
-from .logic.i2c import I2CBridge
-from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
+from django.http import JsonResponse, StreamingHttpResponse
 from django.shortcuts import render
 from django.views.decorators import gzip
 from django.views.decorators.csrf import csrf_exempt
+from .logic.i2c import I2CBridge
 from .logic.camera import VideoCamera, gen
 
-
-#After review of v.1.2 of chatgpt
-
+# Live camera feed view
 @gzip.gzip_page
 def livefe(request):
     try:
@@ -18,13 +16,11 @@ def livefe(request):
         camera.response = response
         camera.start()
     except Exception as e:
-        response = JsonResponse({"error": "true"})
+        response = JsonResponse({"error": e})
         response.status_code = 500
     return response
 
-def index(request):
-    return render(request, 'controller/index.html')
-
+# View called by index page using jQuery AJAX
 @csrf_exempt
 def robot_control(request):
     try:
@@ -42,6 +38,7 @@ def robot_control(request):
 
     return response
 
+# WIP diagnostic view
 def get_status(request):
     try:
         robot = I2CBridge()
@@ -53,18 +50,6 @@ def get_status(request):
         response.status_code = 500
     return response
 
-###
-# example code for later
-#
-# @csrf_exempt
-# def test(request):
-#     try:
-#         payload = json.loads(request.body.decode())
-#         answer = float(payload.get("n1")) + float(payload.get("n2"))
-#         response = JsonResponse({"answer": answer})
-#         return response
-#     except Exception as e:
-#         response = JsonResponse({"error": str(e)})
-#         response.status_code = 500
-#         return response
-###
+
+def index(request):
+    return render(request, 'controller/index.html')
