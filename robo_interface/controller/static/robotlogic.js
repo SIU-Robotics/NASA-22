@@ -5,8 +5,8 @@ function move() {
     let data = new dataObj()
 
     data.type = "movement";
-    data.direction = "forward";
-    data.speed = 100;
+    data.direction = document.getElementById("direction_box").value;
+    data.speed = document.getElementById("speed_box").value;
 
     $.ajax({
         url: '/controller/send_command/',

@@ -14,15 +14,18 @@
             <h2 class="h2">Movement</h2>
             <br>
             <div class="input-group mb-3">
-                <select class="form-select">
+                <select title="direction" id="direction_box" class="form-select">
                     <option selected>Direction...</option>
                     <option value="forward">Forward</option>
                     <option value="backward">Backward</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                    <option value="stop">Stop</option>
                 </select>
             </div>
             <div class="input-group mb-3">
-                <span class="input-group-text" id="" min="0" max="127">Speed</span>
-                <input type="number" class="form-control" placeholder="0-127">
+                <span class="input-group-text">Speed</span>
+                <input type="number" id="speed_box" min="0" max="127" class="form-control" placeholder="0-127">
             </div>
             <button class="btn btn-primary" id="move_btn">Move</button>
             <br><br>

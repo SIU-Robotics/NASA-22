@@ -32,16 +32,7 @@ def robot_control(request):
         payload = json.loads(request.body.decode())
 
         robot = I2CBridge()
-        print(payload)
-        # check which type of command we're dealing with
-        if (payload.get("type") == "movement"):
-            robot.move(payload.get("direction"), int(payload.get("speed")))
-
-        elif (payload.get("type") == "claw"):
-            robot.grab()
-
-        else:
-            raise Exception("Unknown command")
+        robot.move(payload.get("direction"), int(payload.get("speed")))
 
         response = JsonResponse({"success": "true"})
     except Exception as e:
@@ -51,6 +42,16 @@ def robot_control(request):
 
     return response
 
+def get_status(request):
+    try:
+        robot = I2CBridge()
+        if(robot.status() == 0):
+            response = JsonResponse({"success": "true"})
+    except Exception as e:
+        print(e)
+        response = JsonResponse({"error": str(e)})
+        response.status_code = 500
+    return response
 
 ###
 # example code for later
