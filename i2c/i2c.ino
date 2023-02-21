@@ -20,6 +20,56 @@ RoboClaw roboclaw(&serial,10000);
 
 bool command_finish = true;
 
+void startMotor(int direction, int speed) {
+
+  switch(direction) {
+    case FORWARD:
+      for(int i = 0; i <= speed; i++) {
+        roboclaw.BackwardM1(address1, i);
+        roboclaw.BackwardM2(address1, i);
+        roboclaw.BackwardM1(address2, i);
+        roboclaw.BackwardM2(address2, i);
+        delay(50); 
+      }  
+      break;
+    case BACKWARD:
+      for(int i = 0; i <= speed; i++) {
+        roboclaw.ForwardM1(address1, i);
+        roboclaw.ForwardM2(address1, i);
+        roboclaw.ForwardM1(address2, i);
+        roboclaw.ForwardM2(address2, i);
+        delay(50);    
+      }
+      break;
+    case LEFT:
+      for(int i = 0; i <= speed; i++) {
+        roboclaw.ForwardM1(address1, i);
+        roboclaw.ForwardM2(address1, i);
+        roboclaw.BackwardM1(address2, i);
+        roboclaw.BackwardM2(address2, i);
+        delay(50);    
+      }
+      break;
+    case RIGHT:
+      for(int i = 0; i <= speed; i++) {
+        roboclaw.ForwardM1(address2, i);
+        roboclaw.ForwardM2(address2, i);
+        roboclaw.BackwardM1(address1, i);
+        roboclaw.BackwardM2(address1, i);
+        delay(50);    
+      }
+      break;
+    case STOP:
+      roboclaw.ForwardM1(address2, 0);
+      roboclaw.ForwardM2(address2, 0);
+      roboclaw.BackwardM1(address1, 0);
+      roboclaw.BackwardM2(address1, 0);
+      break;
+    default:
+      break;
+  }      
+}
+
 void receiveData(int byteCount)
 {
   Serial.print("BYTE COUNT: ");
@@ -29,78 +79,11 @@ void receiveData(int byteCount)
     incomingData[i] = Wire.read();
   }
 
-  switch(incomingData[0]) {
-    case MOVEMENT:
-      // there will be a direction and a speed
-      Serial.println("Type: Movement");
-      if (incomingData[1] == FORWARD) {
-        Serial.println("Direction: Forward");
-       for(int i = 0; i <= 32; i++) {
-          roboclaw.BackwardM1(address1, i);
-          roboclaw.BackwardM2(address1, i);
-          roboclaw.BackwardM1(address2, i);
-          roboclaw.BackwardM2(address2, i);
-          delay(50); 
-       }        
-      }
-      else if (incomingData[1] == BACKWARD) {
-        Serial.println("Direction: Backward");
-        for(int i = 0; i <= 32; i++) {
-          roboclaw.ForwardM1(address1, i);
-          roboclaw.ForwardM2(address1, i);
-          roboclaw.ForwardM1(address2, i);
-          roboclaw.ForwardM2(address2, i);
-          delay(50);    
-        }
-      }
-      else if (incomingData[1] == LEFT) {
-        Serial.println("Direction: Left");
-        for(int i = 0; i <= 32; i++) {
-          roboclaw.ForwardM1(address1, i);
-          roboclaw.ForwardM2(address1, i);
-          roboclaw.BackwardM1(address2, i);
-          roboclaw.BackwardM2(address2, i);
-          delay(50);    
-        }
-      }
-      else if (incomingData[1] == RIGHT) {
-        Serial.println("Direction: Right");
-        for(int i = 0; i <= 32; i++) {
-          roboclaw.ForwardM1(address2, i);
-          roboclaw.ForwardM2(address2, i);
-          roboclaw.BackwardM1(address1, i);
-          roboclaw.BackwardM2(address1, i);
-          delay(50);    
-        }
-      }
-      else if (incomingData[1] == STOP) {
-        Serial.println("Direction: Stop");
-        roboclaw.ForwardM1(address2, 0);
-        roboclaw.ForwardM2(address2, 0);
-        roboclaw.BackwardM1(address1, 0);
-        roboclaw.BackwardM2(address1, 0); 
-      }        
-      else {
-        Serial.println("Direction: Unknown");
-      }
-
-      Serial.println("Speed: " + incomingData[2]);
-      
-      break;
-    default:
-      break;
-
+  if (incomingData[2] >= 30) {
+    return;
   }
-  switch(incomingData[1]) {
-    case MOVEMENT:
-      // there will be a direction and a speed
-      Serial.print("Type: Movement");
-      
-      break;
-    default:
-      break;
 
-  }
+  startMotor(incomingData[1], incomingData[2]);
 
 }
 

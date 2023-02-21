@@ -1,15 +1,12 @@
-$("#light_button").click(toggle_light);
+$(".move_btn").click(move);
 
-function toggle_light() {
+function move(information_test) {
 
     let data = new dataObj();
 
-    if ($("#radio_on").is(":checked")) {
-        data.status = "on";
-    }
-    else {
-        data.status = "off";
-    }
+    data.type = "movement";
+    data.direction = information_test.target.id;
+    data.speed = document.getElementById("speed");
 
     $.ajax({
         url: '/controller/send_command/',
@@ -21,7 +18,7 @@ function toggle_light() {
 }
 
 function successful_response(data) {
-    alert("Successfully changed the state of the light.");
+    
 }
 
 function error_response(error_json) {
@@ -29,5 +26,6 @@ function error_response(error_json) {
 }
 
 function dataObj() {
-    this.status;
+    this.type;
+    this.speed;
 }
