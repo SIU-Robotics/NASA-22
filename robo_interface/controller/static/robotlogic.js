@@ -1,12 +1,12 @@
-$("#move_btn").click(move);
+$(".move_btn").click(move);
 
-function move() {
+function move(information_test) {
 
-    let data = new dataObj()
+    let data = new dataObj();
 
     data.type = "movement";
-    data.direction = document.getElementById("direction_box").value;
-    data.speed = document.getElementById("speed_box").value;
+    data.direction = information_test.target.id;
+    data.speed = document.getElementById("speed");
 
     $.ajax({
         url: '/controller/send_command/',
@@ -18,7 +18,7 @@ function move() {
 }
 
 function successful_response(data) {
-    alert("Successfully changed the state of the light.");
+    
 }
 
 function error_response(error_json) {
