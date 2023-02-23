@@ -21,7 +21,7 @@ RoboClaw roboclaw(&serial,10000);
 bool command_finish = true;
 
 void startMotor(int direction, int speed) {
-
+  Serial.println(direction);
   switch(direction) {
     case FORWARD:
       for(int i = 0; i <= speed; i++) {
@@ -79,7 +79,8 @@ void receiveData(int byteCount)
     incomingData[i] = Wire.read();
   }
 
-  if (incomingData[2] >= 30) {
+  if (incomingData[2] > 30) {
+    Serial.println("Overspeed");
     return;
   }
 
@@ -88,7 +89,7 @@ void receiveData(int byteCount)
 }
 
 void loop() {
-  
+
 }
 
 void setup() 
