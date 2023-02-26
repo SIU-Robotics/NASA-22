@@ -6,7 +6,7 @@ function move(information_test) {
 
     data.type = "movement";
     data.direction = information_test.target.id;
-    data.speed = document.getElementById("speed");
+    data.speed = document.getElementById("speed_box").value;
 
     $.ajax({
         url: '/controller/send_command/',
