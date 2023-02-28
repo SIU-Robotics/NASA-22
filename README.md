@@ -36,6 +36,9 @@ This year (2022-2023), we're set on implementing automation.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## DEPENDENCIES
+
+Python3: Django, smbus2, opencv_python
 
 ## Website
 
