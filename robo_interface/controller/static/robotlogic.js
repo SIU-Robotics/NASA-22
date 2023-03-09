@@ -1,11 +1,53 @@
 $(".move_btn").click(move);
 
-function move(information_test) {
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+const keys = { left: 37, up: 38, right: 39, down: 40 };
+
+let rightPressed = false;
+let leftPressed = false;
+let upPressed = false;
+let downPressed = false;
+let moving = false;
+
+function keyDownHandler(event) {
+    if(moving) return;
+    if (event.keyCode === keys.right) {
+        move("right");
+        console.log("MOVE RIGHT");
+        moving = true;
+    } else if (event.keyCode === keys.left) {
+        move("left");
+        console.log("MOVE LEFT");
+        moving = true;
+    }
+    if (event.keyCode === keys.down) {
+        move("backward");
+        console.log("MOVE BACK");
+        moving = true;
+    } else if (event.keyCode === keys.up) {
+        move("forward");
+        console.log("MOVE FORWARD");
+        moving = true;
+    }
+}
+
+function keyUpHandler(event) {
+    if ([37, 38, 39, 40].includes(event.keyCode)) {
+        move("stop");
+        console.log("STOP")
+        moving = false;
+    }
+}
+  
+  
+function move(command) {
 
     let data = new dataObj();
 
     data.type = "movement";
-    data.direction = information_test.target.id;
+    data.direction = command;
     data.speed = document.getElementById("speed_box").value;
 
     $.ajax({
