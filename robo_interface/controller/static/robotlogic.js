@@ -59,6 +59,26 @@ function move(command) {
     });
 }
 
+document.addEventListener('keypress', keypressed)
+
+document.onkeydown = keypressed;
+
+function keypressed(event){
+    var name = event.key;
+    var code = event.code;
+    // Alert the key name and key code on keydown
+    console.log(`Key pressed ${name} \r\n Key code value: ${code}`);
+    console.log("0x" + name.charCodeAt(0).toString(16));
+
+    // $.ajax({
+    //     url: '/controller/send_command/',
+    //     type: 'POST',
+    //     data: JSON.stringify(code),
+    //     success: successful_response,
+    //     error: error_response,
+    // })
+}
+
 function successful_response(data) {
     
 }
