@@ -11,17 +11,49 @@
     <body>
         <div id="wrapper">
             <h1 class="h1">SIU NASA Control Panel</h1><br>
-            <h2 class="h2">Movement</h2>
-            <br>
-            <div class="input-group mb-3">
-                <span class="input-group-text">Speed</span>
-                <input type="number" id="speed_box" min="0" max="30" class="form-control" placeholder="0-127">
-            </div>
+            <section id="drive-left">
+                <h4 style="text-align:center">Drive Controls</h4>
+                <button onclick="forward()" type="button">W</button>
+                <button onclick="stop()" type="button">E</button>
+                <br />
+                <button onclick="left()" type="button">A</button>
+                <button onclick="backward()" type="button">S</button>
+                <button onclick="right()" type="button">D</button>
+            </section>
+        
+            <section id="auger-middle">
+                <h4 style="text-align:center">Dig Controls</h4>
+                <button onclick="augercw()" type="button">T</button>
+                <button onclick="augerforward()" type="button">Y</button>
+                <br />
+                <button onclick="augerccw()" type="button">G</button>
+                <button onclick="augerbackward()" type="button">H</button>
+                <br />
+                <button onclick="augerspinstop()" type="button">B</button>
+                <button onclick="augermovestop()" type="button">N</button>
+            </section>
+        
+            <section id="linact-left">
+                <h4 style="text-align:center">Tilt Controls</h4>
+                <button onclick="bodytiltf()" type="button">I</button>
+                <button onclick="augertiltf()" type="button">O</button>
+                <br />
+                <button onclick="bodytiltb()" type="button">K</button>
+                <button onclick="augertiltb()" type="button">L</button>
+                <br />
+                <button onclick="bodystop()" type="button">,</button>
+                <button onclick="augertiltstop()" type="button">.</button>
+            </section>
+        
+            <section id="autonomy">
+                <h4 style="text-align:center">Autonomy Controls</h4>
+                <button onclick="autodrive()" type="button">5</button>
+                <button onclick="autodig()" type="button">9</button>
+                <br />
+                <button onclick="autodrivestop()" type="button">6</button>
+                <button onclick="autodigstop()" type="button">0</button>
+            </section>
             
-            
-            <br><br>
-            <h1 class="h1">Claw</h1>
-            <button class="btn btn-primary" id="grab_btn">Grab</button>
             <br><br>
             <h2>Video Stream:</h2>
             <br>
