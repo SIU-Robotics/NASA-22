@@ -1,0 +1,50 @@
+﻿body
+{
+    background-color: maroon;
+}
+#drive-left
+{
+    background-color: white;
+    width: 150px;
+    padding: 10px;
+    border: 5px solid gray;
+    margin: 0;
+    margin-block-start: auto;
+    display: flex;
+    display: block;
+}
+#auger-middle {
+    background-color: white;
+    width: 150px;
+    padding: 10px;
+    border: 5px solid gray;
+    margin: 0;
+    margin-block-start: auto;
+    display: flex;
+    display: block;
+}
+#linact-left {
+    background-color: white;
+    width: 150px;
+    padding: 10px;
+    border: 5px solid gray;
+    margin: 0;
+    margin-block-start: auto;
+    display: flex;
+    display: block;
+}
+#autonomy {
+    background-color: white;
+    width: 150px;
+    padding: 10px;
+    border: 5px solid gray;
+    margin: 0;
+    margin-block-start: auto;
+    display: flex;
+    display: block;
+}
+button
+{
+    background-color: maroon;
+    text-align: center;
+}

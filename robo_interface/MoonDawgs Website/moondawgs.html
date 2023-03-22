@@ -1,0 +1,73 @@
+﻿{% load static %}
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="dawgstyles.css" />
+
+    <!--shit-->
+    
+    <style>
+
+        .column {
+            float: left;
+            width: 33.33%;
+            padding: 15px;
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+    <meta charset="utf-8" />
+    <h1 style="text-align:center">NASA MoonDawgs Control Center</h1>
+</head>
+<body onkeydown="getkey(event)">
+    <section id="drive-left">
+        <h4 style="text-align:center">Drive Controls</h4>
+        <button onclick="forward()" type="button">W</button>
+        <button onclick="stop()" type="button">E</button>
+        <br />
+        <button onclick="left()" type="button">A</button>
+        <button onclick="backward()" type="button">S</button>
+        <button onclick="right()" type="button">D</button>
+    </section>
+
+    <section id="auger-middle">
+        <h4 style="text-align:center">Dig Controls</h4>
+        <button onclick="augercw()" type="button">T</button>
+        <button onclick="augerforward()" type="button">Y</button>
+        <br />
+        <button onclick="augerccw()" type="button">G</button>
+        <button onclick="augerbackward()" type="button">H</button>
+        <br />
+        <button onclick="augerspinstop()" type="button">B</button>
+        <button onclick="augermovestop()" type="button">N</button>
+    </section>
+
+    <section id="linact-left">
+        <h4 style="text-align:center">Tilt Controls</h4>
+        <button onclick="bodytiltf()" type="button">I</button>
+        <button onclick="augertiltf()" type="button">O</button>
+        <br />
+        <button onclick="bodytiltb()" type="button">K</button>
+        <button onclick="augertiltb()" type="button">L</button>
+        <br />
+        <button onclick="bodystop()" type="button">,</button>
+        <button onclick="augertiltstop()" type="button">.</button>
+    </section>
+
+    <section id="autonomy">
+        <h4 style="text-align:center">Autonomy Controls</h4>
+        <button onclick="autodrive()" type="button">5</button>
+        <button onclick="autodig()" type="button">9</button>
+        <br />
+        <button onclick="autodrivestop()" type="button">6</button>
+        <button onclick="autodigstop()" type="button">0</button>
+    </section>
+</body>
+</html>
