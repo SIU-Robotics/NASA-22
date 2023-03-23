@@ -7,6 +7,33 @@
 #define address1 0x80
 #define address2 0x81
 
+// Type bytes
+#define MOVEMENT 0x00
+#define AUGER 0x10
+#define TILT 0x20
+#define AUTO 0x30
+
+// Command bytes
+#define FORWARD 0x01
+#define BACKWARD 0x02
+#define LEFT 0x03
+#define RIGHT 0x04
+#define STOP 0x05
+#define CLOCKWISE 0x11
+#define COUNTERCLOCKWISE 0x12
+#define STOP_SPIN 0x13
+#define STOP_MOVE 0x14
+#define BODY_FORWARD 0x21
+#define BODY_BACKWARD 0x22
+#define AUGER_FORWARD 0x23
+#define AUGER_BACKWARD 0x24
+#define BODY_STOP 0x25
+#define AUGER_STOP 0x26
+#define ENABLE_DRIVE 0x31
+#define DISABLE_DRIVE 0x32
+#define ENABLE_DIG 0x33
+#define DISABLE_DIG 0x34
+
 //Relay pins for auger and drill
 //Tube relays
 int IN1 = 2;
@@ -21,6 +48,9 @@ int IN6 = 7;
 //Auger actuator
 int IN7 = 8;
 int IN8 = 9;
+
+//idk wtf this is
+int IN9 = 10;
 
 //Limit Switch pins
 int limitSwitchRear = 12;
@@ -38,40 +68,18 @@ int augerActuatorState = 2;
 //Relay control byte???
 byte byte_to_use[3];
 
-// Type bytes
-#define MOVEMENT = 0x00
-#define AUGER = 0x10
-#define TILT = 0x20
-#define AUTO = 0x30
 
-// Command bytes
-#define FORWARD = 0x01
-#define BACKWARD = 0x02
-#define LEFT = 0x03
-#define RIGHT = 0x04
-#define STOP = 0x05
-#define CLOCKWISE = 0x11
-#define COUNTERCLOCKWISE = 0x12
-#define STOP_SPIN = 0x13
-#define STOP_MOVE = 0x14
-#define BODY_FORWARD = 0x21
-#define BODY_BACKWARD = 0x22
-#define AUGER_FORWARD = 0x23
-#define AUGER_BACKWARD = 0x24
-#define BODY_STOP = 0x25
-#define AUGER_STOP = 0x26
-#define ENABLE_DRIVE = 0x31
-#define DISABLE_DRIVE = 0x32
-#define ENABLE_DIG = 0x33
-#define DISABLE_DIG = 0x34
 
 SoftwareSerial serial(10,11);
 RoboClaw roboclaw(&serial,10000);
 
-bool command_finish = true;
+bool command_finished = true;
 
 void startMotor(int direction, int speed) {
   
+  Serial.print("Motor: ");
+  Serial.println(direction);
+  return;
   // Determine which direction we will move
   // Then, start the motors in that direction
   switch(direction) {
@@ -111,7 +119,9 @@ void startMotor(int direction, int speed) {
 }
 
 void startAuger(int command) {
-
+  Serial.print("Auger: ");
+  Serial.println(command);
+  return;
   // Determine which command was sent
   // Then, call that function
   switch(command) {
@@ -141,6 +151,9 @@ void startAuger(int command) {
 
 void startTilt(int command) {
 
+  Serial.print("Tilt: ");
+  Serial.println(command);
+  return;
   // Determine which command was sent
   // Then, call that function
   switch(command) {
@@ -180,10 +193,7 @@ void receiveData(int byteCount)
   int incomingData[byteCount];
   for (int i = 0; i < byteCount; i++) {
     incomingData[i] = Wire.read();
-    Serial.println(incomingData[i]);
   }
-
-  return;
 
   // Determine what type of operation we are doing
   // Then, call that function (e.g. startMotor for movement)
@@ -334,28 +344,6 @@ void chasisActuatorControl(){
   }
 }
 
-/*
-Switch case function for auger linear actuator state
-
-Default is off
-*/
-
-void chasisActuatorControl(){
-  Serial.println("INSIDE AUGERACTUATORCONTROL");
-  switch(augerActuatorState){
-    case '0':
-      augerActuatorForward();
-      break;
-    case '1':
-      augerActuatorBackward();
-      break;
-    case '2':
-      augerActuatorStop();
-      break;
-    default:
-      augerActuatorStop();
-  }
-}
 
 /*
 Switch case function for tube state
