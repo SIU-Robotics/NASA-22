@@ -28,7 +28,7 @@ This year (2022-2023), we're set on implementing automation.
 
 - [x] Create website
 - [x] Implement I2C
-- [ ] Working motors and driving
+- [x] Working motors and driving
 - [ ] Functional auger
 - [ ] Automatic driving
 - [ ] Automatic digging
