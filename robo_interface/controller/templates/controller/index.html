@@ -11,56 +11,82 @@
     <body>
         <div id="wrapper">
             <h1 class="h1">SIU NASA Control Panel</h1><br>
-            <section id="drive-left">
-                <h4 style="text-align:center">Drive Controls</h4>
-                <button onclick="forward()" type="button">W</button>
-                <button onclick="stop()" type="button">E</button>
-                <br />
-                <button onclick="left()" type="button">A</button>
-                <button onclick="backward()" type="button">S</button>
-                <button onclick="right()" type="button">D</button>
-            </section>
-        
-            <section id="auger-middle">
-                <h4 style="text-align:center">Dig Controls</h4>
-                <button onclick="augercw()" type="button">T</button>
-                <button onclick="augerforward()" type="button">Y</button>
-                <br />
-                <button onclick="augerccw()" type="button">G</button>
-                <button onclick="augerbackward()" type="button">H</button>
-                <br />
-                <button onclick="augerspinstop()" type="button">B</button>
-                <button onclick="augermovestop()" type="button">N</button>
-            </section>
-        
-            <section id="linact-left">
-                <h4 style="text-align:center">Tilt Controls</h4>
-                <button onclick="bodytiltf()" type="button">I</button>
-                <button onclick="augertiltf()" type="button">O</button>
-                <br />
-                <button onclick="bodytiltb()" type="button">K</button>
-                <button onclick="augertiltb()" type="button">L</button>
-                <br />
-                <button onclick="bodystop()" type="button">,</button>
-                <button onclick="augertiltstop()" type="button">.</button>
-            </section>
-        
-            <section id="autonomy">
-                <h4 style="text-align:center">Autonomy Controls</h4>
-                <button onclick="autodrive()" type="button">5</button>
-                <button onclick="autodig()" type="button">9</button>
-                <br />
-                <button onclick="autodrivestop()" type="button">6</button>
-                <button onclick="autodigstop()" type="button">0</button>
-            </section>
+            <table class="big_table">
+                <tr>
+                    <td><h4>Drive Controls</h4></td>
+                    <td><h4>Auger Controls</h4></td>
+                    <td><h4>Video Stream</h4></td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul>
+                            <li>Forward: W</li>
+                            <li>Backward: S</li>
+                            <li>Left: A</li>
+                            <li>Right: D</li>
+                            <li>Stop: E</li>
+                        </ul>
+                        
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Clockwise: T</li>
+                            <li>Counter Clockwise: G</li>
+                            <li>Forward: Y</li>
+                            <li>Backward: H</li>
+                            <li>Stop Spin: B</li>
+                            <li>Stop Movement: N</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <button class="btn btn-secondary" id="camera_btn">Click to toggle camera</button> 
+                        <span id="video"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><h4>Tilt Controls</h4></td>
+                    <td><h4>Autonomy Controls</h4></td>
+                    <td><h4>Sent Commands</h4></td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul>
+                            <li>Tilt Body Forward: I</li>
+                            <li>Tilt Body Backward: K</li>
+                            <li>Tilt Auger Forward: O</li>
+                            <li>Tilt Auger Backward: L</li>
+                            <li>Stop Body: ,</li>
+                            <li>Stop Auger: .</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <div>
+                        <ul>
+                            <li>Enable Auto Drive: 5</li>
+                            <li>Stop Auto Drive: 6</li>
+                            <li>Enable Auto Dig: 9</li>
+                            <li>Stop Auto Dig: 0</li>
+                        </ul></div>
+                    </td>
+                    <td>
+                        <div id="table_container">
+                            <table id="commands">
+                                <tr>
+                                    <th>##</th>
+                                    <th>Type</th>
+                                    <th>Command</th>
+                                    <th>Status</th>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
             
             <br><br>
-            <h2>Video Stream:</h2>
             <br>
             <div>
-                <button class="btn btn-secondary" id="camera_btn">Click to toggle camera</button>
-                <br><br>
-                <span id="video"></span>
             </div>
         </div>
     </body>
