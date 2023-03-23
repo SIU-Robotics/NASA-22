@@ -116,16 +116,22 @@ void startAuger(int command) {
   // Then, call that function
   switch(command) {
     case CLOCKWISE:
+      drillForward();
       break;
     case COUNTERCLOCKWISE:
-      break;
-    case FORWARD:
-      break;
-    case BACKWARD:
+      drillBackward();
       break;
     case STOP_SPIN:
+      drillStop();
+      break;
+    case FORWARD:
+      tubeForward();
+      break;
+    case BACKWARD:
+      tubeBackward();
       break;
     case STOP_MOVE:
+      tubeStop();
       break;
     default:
       break;
@@ -139,16 +145,22 @@ void startTilt(int command) {
   // Then, call that function
   switch(command) {
     case BODY_FORWARD:
+      chasisActuatorForward();
       break;
     case BODY_BACKWARD:
-      break;
-    case AUGER_FORWARD:
-      break;
-    case AUGER_BACKWARD:
+      chasisActuatorBackward();
       break;
     case BODY_STOP:
+      chasisActuatorStop();
+      break;
+    case AUGER_FORWARD:
+      augerActuatorForward();
+      break;
+    case AUGER_BACKWARD:
+      augerActuatorBackward();
       break;
     case AUGER_STOP:
+      augerActuatorStop();
       break;
     default:
       break;
@@ -159,7 +171,6 @@ void startTilt(int command) {
 void receiveData(int byteCount)
 {
 
-
   // Create an array and store all information from the incoming data in it.
   // This will let use all of the bytes
   //
@@ -169,7 +180,10 @@ void receiveData(int byteCount)
   int incomingData[byteCount];
   for (int i = 0; i < byteCount; i++) {
     incomingData[i] = Wire.read();
+    Serial.println(incomingData[i]);
   }
+
+  return;
 
   // Determine what type of operation we are doing
   // Then, call that function (e.g. startMotor for movement)
@@ -497,6 +511,7 @@ void loop() {
       drillRead();
       drillControl();
     }  
+  }
 }
 
 void setup() 
