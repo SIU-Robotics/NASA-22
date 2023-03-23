@@ -38,13 +38,32 @@ int augerActuatorState = 2;
 //Relay control byte???
 byte byte_to_use[3];
 
-// Movement bytes
-#define MOVEMENT 0x00
-#define FORWARD 0x01
-#define BACKWARD 0x02
-#define LEFT 0x03
-#define RIGHT 0x04
-#define STOP 0x05
+// Type bytes
+#define MOVEMENT = 0x00
+#define AUGER = 0x10
+#define TILT = 0x20
+#define AUTO = 0x30
+
+// Command bytes
+#define FORWARD = 0x01
+#define BACKWARD = 0x02
+#define LEFT = 0x03
+#define RIGHT = 0x04
+#define STOP = 0x05
+#define CLOCKWISE = 0x11
+#define COUNTERCLOCKWISE = 0x12
+#define STOP_SPIN = 0x13
+#define STOP_MOVE = 0x14
+#define BODY_FORWARD = 0x21
+#define BODY_BACKWARD = 0x22
+#define AUGER_FORWARD = 0x23
+#define AUGER_BACKWARD = 0x24
+#define BODY_STOP = 0x25
+#define AUGER_STOP = 0x26
+#define ENABLE_DRIVE = 0x31
+#define DISABLE_DRIVE = 0x32
+#define ENABLE_DIG = 0x33
+#define DISABLE_DIG = 0x34
 
 SoftwareSerial serial(10,11);
 RoboClaw roboclaw(&serial,10000);
@@ -52,43 +71,33 @@ RoboClaw roboclaw(&serial,10000);
 bool command_finish = true;
 
 void startMotor(int direction, int speed) {
-  Serial.println(direction);
+  
+  // Determine which direction we will move
+  // Then, start the motors in that direction
   switch(direction) {
     case FORWARD:
-      for(int i = 0; i <= speed; i++) {
-        roboclaw.BackwardM1(address1, i);
-        roboclaw.BackwardM2(address1, i);
-        roboclaw.BackwardM1(address2, i);
-        roboclaw.BackwardM2(address2, i);
-        delay(50); 
-      }  
+      roboclaw.BackwardM1(address1, speed);
+      roboclaw.BackwardM2(address1, speed);
+      roboclaw.BackwardM1(address2, speed);
+      roboclaw.BackwardM2(address2, speed);
       break;
     case BACKWARD:
-      for(int i = 0; i <= speed; i++) {
-        roboclaw.ForwardM1(address1, i);
-        roboclaw.ForwardM2(address1, i);
-        roboclaw.ForwardM1(address2, i);
-        roboclaw.ForwardM2(address2, i);
-        delay(50);    
-      }
+      roboclaw.ForwardM1(address1, speed);
+      roboclaw.ForwardM2(address1, speed);
+      roboclaw.ForwardM1(address2, speed);
+      roboclaw.ForwardM2(address2, speed);
       break;
     case LEFT:
-      for(int i = 0; i <= speed; i++) {
-        roboclaw.ForwardM1(address1, i);
-        roboclaw.ForwardM2(address1, i);
-        roboclaw.BackwardM1(address2, i);
-        roboclaw.BackwardM2(address2, i);
-        delay(50);    
-      }
+      roboclaw.ForwardM1(address1, speed);
+      roboclaw.ForwardM2(address1, speed);
+      roboclaw.BackwardM1(address2, speed);
+      roboclaw.BackwardM2(address2, speed);
       break;
     case RIGHT:
-      for(int i = 0; i <= speed; i++) {
-        roboclaw.ForwardM1(address2, i);
-        roboclaw.ForwardM2(address2, i);
-        roboclaw.BackwardM1(address1, i);
-        roboclaw.BackwardM2(address1, i);
-        delay(50);    
-      }
+      roboclaw.ForwardM1(address2, speed);
+      roboclaw.ForwardM2(address2, speed);
+      roboclaw.BackwardM1(address1, speed);
+      roboclaw.BackwardM2(address1, speed);
       break;
     case STOP:
       roboclaw.ForwardM1(address2, 0);
@@ -101,21 +110,84 @@ void startMotor(int direction, int speed) {
   }      
 }
 
+void startAuger(int command) {
+
+  // Determine which command was sent
+  // Then, call that function
+  switch(command) {
+    case CLOCKWISE:
+      break;
+    case COUNTERCLOCKWISE:
+      break;
+    case FORWARD:
+      break;
+    case BACKWARD:
+      break;
+    case STOP_SPIN:
+      break;
+    case STOP_MOVE:
+      break;
+    default:
+      break;
+  }
+
+}
+
+void startTilt(int command) {
+
+  // Determine which command was sent
+  // Then, call that function
+  switch(command) {
+    case BODY_FORWARD:
+      break;
+    case BODY_BACKWARD:
+      break;
+    case AUGER_FORWARD:
+      break;
+    case AUGER_BACKWARD:
+      break;
+    case BODY_STOP:
+      break;
+    case AUGER_STOP:
+      break;
+    default:
+      break;
+  }
+
+}
+
 void receiveData(int byteCount)
 {
-  Serial.print("BYTE COUNT: ");
-  Serial.println(byteCount);
+
+
+  // Create an array and store all information from the incoming data in it.
+  // This will let use all of the bytes
+  //
+  // Item 0 will be the type of command to be issued (movement, auger, tilt, auto)
+  // Item 1 will be the actual command to be issued (forward, backward, etc.)
+  // Item 2 will be the speed for movement commands
   int incomingData[byteCount];
   for (int i = 0; i < byteCount; i++) {
     incomingData[i] = Wire.read();
   }
 
-  if (incomingData[2] > 30) {
-    Serial.println("Overspeed");
-    return;
+  // Determine what type of operation we are doing
+  // Then, call that function (e.g. startMotor for movement)
+  switch(incomingData[0]) {
+    case MOVEMENT:
+      startMotor(incomingData[1], incomingData[2]);
+      break;
+    case AUGER:
+      startAuger(incomingData[1]);
+      break;
+    case TILT:
+      startTilt(incomingData[1]);
+      break;
+    case AUTO: // not used at the moment
+      break;
+    default:
+      break;
   }
-
-  startMotor(incomingData[1], incomingData[2]);
 
 }
 
