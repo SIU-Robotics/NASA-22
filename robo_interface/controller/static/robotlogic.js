@@ -143,11 +143,11 @@ function send_command(type, command) {
 
 
 function successful_response(response) {
-    let status = response.status;
+    let status = "Executed";
     let number = response.number;
 
     let matchingRow = $('#commands tbody tr').filter(function() {
-      return $(this).find('td:first-child').text() === number;
+      return $(this).find('td:first-child').text() == number;
     });
     matchingRow.find('td:last-child').text(status);
 }
