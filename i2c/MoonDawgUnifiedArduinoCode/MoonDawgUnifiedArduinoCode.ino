@@ -7,22 +7,33 @@
 #define address1 0x80
 #define address2 0x81
 
-//Relay control pin definitions
+//Relay pins for auger and drill
+//Tube relays
 int IN1 = 2;
-int IN2 = 3;  
+int IN2 = 3; 
+//Drill relays
 int IN3 = 4;
 int IN4 = 5;
+//Relay pins for linear actuators
+//Chasis actuator
+int IN5 = 6;
+int IN6 = 7;
+//Auger actuator
+int IN7 = 8;
+int IN8 = 9;
 
 //Limit Switch pins
-int limitSwitchRear = 6;
-int limitSwitchForward = 7;
+int limitSwitchRear = 12;
+int limitSwitchForward = 13;
 //Limit Switch Latching Variables
 bool pressedRear = false;
 bool pressedForward = false;
 
-//Latching Switch Cases, for button panel to work (Prob TEMP)
+//Latching Switch Cases, for non-continuous commands
 int tubeState = 2; 
 int drillState = 2;
+int chasisActuatorState = 2;
+int augerActuatorState = 2;
 
 //Relay control byte???
 byte byte_to_use[3];
@@ -119,6 +130,54 @@ Relay functions
 */
 
 /*
+Chasis linear actuator directionality function
+
+1. Actuator forward
+2. Actuator backward
+3. Actuator stop
+*/
+
+void chasisActuatorForward(){
+  Serial.println("chasis actuator forward"); 
+  digitalWrite(IN7, LOW);  //Low must always come before high
+  digitalWrite(IN6, HIGH);
+}
+void chasisActuatorBackward(){
+  Serial.println("chasis actuator backward");
+  digitalWrite(IN6, LOW);
+  digitalWrite(IN7, HIGH);
+}
+void chasisActuatorStop(){
+  Serial.println("chasis actuator stop");
+  digitalWrite(IN6, LOW);
+  digitalWrite(IN7, LOW);
+}
+
+/*
+Auger linear actuator directionality function
+
+1. Actuator forward
+2. Actuator backward
+3. Actuator stop
+*/
+
+void augerActuatorForward(){
+  Serial.println("auger actuator forward"); 
+  digitalWrite(IN9, LOW);  //Low must always come before high
+  digitalWrite(IN8, HIGH);
+}
+void augerActuatorBackward(){
+  Serial.println("auger actuator backward");
+  digitalWrite(IN8, LOW);
+  digitalWrite(IN9, HIGH);
+}
+void augerActuatorStop(){
+  Serial.println("auger actuator stop");
+  digitalWrite(IN8, LOW);
+  digitalWrite(IN9, LOW);
+}
+
+/*
 Tube directionality function
 
 1. Tube forward
@@ -164,6 +223,52 @@ void drillStop(){
   Serial.println("drill stop");
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, HIGH);
+}
+
+/*
+Switch case function for chasis linear actuator state
+
+Default is off
+*/
+
+void chasisActuatorControl(){
+  Serial.println("INSIDE CHASISACTUATORCONTROL");
+  switch(chasisActuatorState){
+    case '0':
+      chasisActuatorForward();
+      break;
+    case '1':
+      chasisActuatorBackward();
+      break;
+    case '2':
+      chasisActuatorStop();
+      break;
+    default:
+      chasisActuatorStop();
+  }
+}
+
+/*
+Switch case function for auger linear actuator state
+
+Default is off
+*/
+
+void chasisActuatorControl(){
+  Serial.println("INSIDE AUGERACTUATORCONTROL");
+  switch(augerActuatorState){
+    case '0':
+      augerActuatorForward();
+      break;
+    case '1':
+      augerActuatorBackward();
+      break;
+    case '2':
+      augerActuatorStop();
+      break;
+    default:
+      augerActuatorStop();
+  }
 }
 
 /*
