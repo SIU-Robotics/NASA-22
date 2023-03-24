@@ -480,8 +480,8 @@ after a set amount of time.
 void limitSwitches(){
   if(pressedRear == false){
     if(digitalRead(limitSwitchRear) == LOW){
-        tubeState = 3;
-        drillState = 3;
+        tubeState = 2;
+        drillState = 2;
         pressedRear = true;
     }
   }
@@ -490,7 +490,7 @@ void limitSwitches(){
   }
   if(pressedForward == false){
     if(digitalRead(limitSwitchForward) == LOW){
-      tubeState = 3;
+      tubeState = 2;
       pressedForward = true;
     }
   }
@@ -501,7 +501,7 @@ void limitSwitches(){
 
 void loop() {
   //call limit switch function to check if limit is reached      
-  limitSwitches();
+  //limitSwitches();
 
   //Something related to I2C that does something
   if(command_finished){
@@ -536,8 +536,8 @@ void setup()
   pinMode(limitSwitchRear, INPUT);
   pinMode(limitSwitchForward, INPUT);
   //Set initial relay condition to LOW (Off) for relays
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, LOW);
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, HIGH);
 }
