@@ -300,19 +300,19 @@ This relay board has inverted inputs
 */
 void drillForward(){
   Serial.println("drill foward");
-  digitalWrite(IN4, HIGH);    
-  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);    
+  digitalWrite(IN3, HIGH);
   Serial.println("INSIDE DRILL FORWARD");
 }
 void drillBackward(){
   Serial.println("drill foward");
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
 }
 void drillStop(){
   Serial.println("drill stop");
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, HIGH);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
 }
 
 /*
