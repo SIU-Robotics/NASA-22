@@ -77,9 +77,6 @@ bool command_finished = true;
 
 void startMotor(int direction, int speed) {
   
-  Serial.print("Motor: ");
-  Serial.println(direction);
-  return;
   // Determine which direction we will move
   // Then, start the motors in that direction
   switch(direction) {
@@ -119,9 +116,6 @@ void startMotor(int direction, int speed) {
 }
 
 void startAuger(int command) {
-  Serial.print("Auger: ");
-  Serial.println(command);
-  return;
   // Determine which command was sent
   // Then, call that function
   switch(command) {
@@ -150,10 +144,6 @@ void startAuger(int command) {
 }
 
 void startTilt(int command) {
-
-  Serial.print("Tilt: ");
-  Serial.println(command);
-  return;
   // Determine which command was sent
   // Then, call that function
   switch(command) {
@@ -184,12 +174,16 @@ void startTilt(int command) {
 void receiveData(int byteCount)
 {
 
-  // Create an array and store all information from the incoming data in it.
-  // This will let use all of the bytes
-  //
-  // Item 0 will be the type of command to be issued (movement, auger, tilt, auto)
-  // Item 1 will be the actual command to be issued (forward, backward, etc.)
-  // Item 2 will be the speed for movement commands
+  /* 
+  Create an array and store all information from the incoming data in it.
+  This will let use all of the bytes
+
+  Item 0 will be the type of command to be issued (movement, auger, tilt, auto)
+  Item 1 will be the actual command to be issued (forward, backward, etc.)
+  Item 2 will be the speed for movement commands
+   */
+
+
   int incomingData[byteCount];
   for (int i = 0; i < byteCount; i++) {
     incomingData[i] = Wire.read();
@@ -341,6 +335,29 @@ void chasisActuatorControl(){
       break;
     default:
       chasisActuatorStop();
+  }
+}
+
+/*
+Switch case function for chasis linear actuator state
+
+Default is off
+*/
+
+void augerActuatorControl(){
+  Serial.println("INSIDE CHASISACTUATORCONTROL");
+  switch(augerActuatorState){
+    case '0':
+      augerActuatorForward();
+      break;
+    case '1':
+      augerActuatorBackward();
+      break;
+    case '2':
+      augerActuatorStop();
+      break;
+    default:
+      augerActuatorStop();
   }
 }
 
