@@ -408,6 +408,48 @@ void drillControl(){
 }
 
 /*
+Reading augerActuator button press
+
+1. Forward
+2. Backward
+3. Stop
+*/
+void augerActuatorRead(){
+  if(byte_to_use[1] == '4'){
+    augerActuatorState = 0;
+  }
+  if(byte_to_use[1] == '5'){
+    augerActuatorState = 1;
+  }
+  if(byte_to_use[1] == '6'){
+    augerActuatorState = 2;
+  }  
+  Serial.print("augerActuatorState: ");
+  Serial.println(augerActuatorState);
+}
+
+/*
+Reading chasisActuator button press
+
+1. Forward
+2. Backward
+3. Stop
+*/
+void chasisActuatorRead(){
+  if(byte_to_use[1] == '4'){
+    chasisActuatorState = 0;
+  }
+  if(byte_to_use[1] == '5'){
+    chasisActuatorState = 1;
+  }
+  if(byte_to_use[1] == '6'){
+    chasisActuatorState = 2;
+  }  
+  Serial.print("chasisActuatorState: ");
+  Serial.println(chasisActuatorState);
+}
+
+/*
 Reading tube button press
 
 1. Forward
