@@ -522,6 +522,7 @@ after a set amount of time.
 void limitSwitches(){
   if(pressedRear == false){
     if(digitalRead(limitSwitchRear) == LOW){
+        Serial.println("Rear Limit Reached, Stopping");
         tubeState = 3;
         drillState = 3;
         pressedRear = true;
@@ -532,6 +533,7 @@ void limitSwitches(){
   }
   if(pressedForward == false){
     if(digitalRead(limitSwitchForward) == LOW){
+      Serial.println("Forward Limit Reached, Stopping");
       tubeState = 3;
       pressedForward = true;
     }
