@@ -49,9 +49,6 @@ int IN6 = 7;
 int IN7 = 8;
 int IN8 = 9;
 
-//idk wtf this is
-int IN9 = 10;
-
 //Limit Switch pins
 int limitSwitchRear = 12;
 int limitSwitchForward = 13;
