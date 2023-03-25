@@ -571,6 +571,10 @@ void setup()
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
+  pinMode(IN5, OUTPUT);
+  pinMode(IN6, OUTPUT);
+  pinMode(IN7, OUTPUT);
+  pinMode(IN8, OUTPUT);
   //Limit Switches
   //Rear = Auger stop motion stop at the back of the mechanism
   //Forward = Motion stop at the front of the mechanism
@@ -581,4 +585,8 @@ void setup()
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, HIGH);
   digitalWrite(IN4, HIGH);
+  digitalWrite(IN5, HIGH);
+  digitalWrite(IN6, HIGH);
+  digitalWrite(IN7, HIGH);
+  digitalWrite(IN8, HIGH);
 }
