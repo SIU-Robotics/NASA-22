@@ -501,7 +501,7 @@ void limitSwitches(){
 
 void loop() {
   //call limit switch function to check if limit is reached      
-  //limitSwitches();
+  limitSwitches();
 
   //Something related to I2C that does something
   if(command_finished){
