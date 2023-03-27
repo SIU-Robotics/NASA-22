@@ -116,7 +116,7 @@ function send_command(type, command) {
     data.type = type;
     data.command = command;
     if (type == "movement") {
-        data.speed = 0;
+        data.speed = document.getElementById("speed").value;
     }
 
     let newRow = $('<tr>').append(
