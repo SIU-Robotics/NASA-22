@@ -49,9 +49,6 @@ int IN6 = 7;
 int IN7 = 8;
 int IN8 = 9;
 
-//idk wtf this is
-int IN9 = 10;
-
 //Limit Switch pins
 int limitSwitchRear = 12;
 int limitSwitchForward = 13;
@@ -229,18 +226,18 @@ Chasis linear actuator directionality function
 
 void chasisActuatorForward(){
   Serial.println("chasis actuator forward"); 
-  digitalWrite(IN7, LOW);  //Low must always come before high
-  digitalWrite(IN6, HIGH);
+  digitalWrite(IN6, LOW);  //Low must always come before high
+  digitalWrite(IN5, HIGH);
 }
 void chasisActuatorBackward(){
   Serial.println("chasis actuator backward");
-  digitalWrite(IN6, LOW);
-  digitalWrite(IN7, HIGH);
+  digitalWrite(IN5, LOW);
+  digitalWrite(IN6, HIGH);
 }
 void chasisActuatorStop(){
   Serial.println("chasis actuator stop");
+  digitalWrite(IN5, LOW);
   digitalWrite(IN6, LOW);
-  digitalWrite(IN7, LOW);
 }
 
 /*
@@ -253,18 +250,18 @@ Auger linear actuator directionality function
 
 void augerActuatorForward(){
   Serial.println("auger actuator forward"); 
-  digitalWrite(IN9, LOW);  //Low must always come before high
-  digitalWrite(IN8, HIGH);
+  digitalWrite(IN8, LOW);  //Low must always come before high
+  digitalWrite(IN7, HIGH);
 }
 void augerActuatorBackward(){
   Serial.println("auger actuator backward");
-  digitalWrite(IN8, LOW);
-  digitalWrite(IN9, HIGH);
+  digitalWrite(IN7, LOW);
+  digitalWrite(IN8, HIGH);
 }
 void augerActuatorStop(){
   Serial.println("auger actuator stop");
+  digitalWrite(IN7, LOW);
   digitalWrite(IN8, LOW);
-  digitalWrite(IN9, LOW);
 }
 
 /*
@@ -276,18 +273,18 @@ Tube directionality function
 */
 void tubeForward(){
   Serial.println("tube forward"); 
-  digitalWrite(IN2, LOW);  //Low must always come before high
-  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, HIGH);  // High must always come before low
+  digitalWrite(IN1, LOW);
 }
 void tubeBackward(){
   Serial.println("tube backward");
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, HIGH);
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
 }
 void tubeStop(){
   Serial.println("tube stop");
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, LOW);
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, HIGH);
 }
 
 /*
@@ -368,7 +365,7 @@ Switch case function for tube state
 Default is off
 */
 void tubeControl(){
-  Serial.println("INSIDE TUBECONTROL");
+  Serial.println("INSIDE TUBECONTROL");  
   switch(tubeState){
     case '0':
       tubeForward();
@@ -390,7 +387,7 @@ Switch case function for drill state
 Default is off
 */
 void drillControl(){
-  Serial.println("INSIDE DRILL CONTROL");
+  Serial.println("INSIDE DRILL CONTROL");  
   switch(drillState){
     case '0':
       drillForward();
@@ -405,6 +402,48 @@ void drillControl(){
     default:
       drillStop();
   }
+}
+
+/*
+Reading augerActuator button press
+
+1. Forward
+2. Backward
+3. Stop
+*/
+void augerActuatorRead(){
+  if(byte_to_use[1] == '4'){
+    augerActuatorState = 0;
+  }
+  if(byte_to_use[1] == '5'){
+    augerActuatorState = 1;
+  }
+  if(byte_to_use[1] == '6'){
+    augerActuatorState = 2;
+  }  
+  Serial.print("augerActuatorState: ");
+  Serial.println(augerActuatorState);
+}
+
+/*
+Reading chasisActuator button press
+
+1. Forward
+2. Backward
+3. Stop
+*/
+void chasisActuatorRead(){
+  if(byte_to_use[1] == '4'){
+    chasisActuatorState = 0;
+  }
+  if(byte_to_use[1] == '5'){
+    chasisActuatorState = 1;
+  }
+  if(byte_to_use[1] == '6'){
+    chasisActuatorState = 2;
+  }  
+  Serial.print("chasisActuatorState: ");
+  Serial.println(chasisActuatorState);
 }
 
 /*
@@ -455,7 +494,7 @@ void drillRead(){
     drillState = 2;
   }
   Serial.print("drillState: ");
-  Serial.println(drillState);
+  Serial.println(drillState);  
   // if (digitalRead(butt4) == LOW){
   //   drillState = 0;
   // }
@@ -470,8 +509,8 @@ void drillRead(){
 /*
 Limit Switch
 
-1. Rear == High - Auger stops and motion stops
-2. Forward == High - Motion stops and auger continues
+1. Rear == Low - Auger stops and motion stops
+2. Forward == Low - Motion stops and auger continues
 
 Eventually a time command will be placed as to have the auger automatically move
 after a set amount of time.
@@ -480,8 +519,9 @@ after a set amount of time.
 void limitSwitches(){
   if(pressedRear == false){
     if(digitalRead(limitSwitchRear) == LOW){
-        tubeState = 3;
-        drillState = 3;
+        Serial.println("Rear Limit Reached, Stopping");
+        tubeStop();
+        drillStop();
         pressedRear = true;
     }
   }
@@ -490,7 +530,8 @@ void limitSwitches(){
   }
   if(pressedForward == false){
     if(digitalRead(limitSwitchForward) == LOW){
-      tubeState = 3;
+      Serial.println("Forward Limit Reached, Stopping");
+      tubeStop();
       pressedForward = true;
     }
   }
@@ -530,14 +571,25 @@ void setup()
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
+  pinMode(IN5, OUTPUT);
+  pinMode(IN6, OUTPUT);
+  pinMode(IN7, OUTPUT);
+  pinMode(IN8, OUTPUT);
   //Limit Switches
   //Rear = Auger stop motion stop at the back of the mechanism
   //Forward = Motion stop at the front of the mechanism
   pinMode(limitSwitchRear, INPUT);
   pinMode(limitSwitchForward, INPUT);
-  //Set initial relay condition to LOW (Off) for relays
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, LOW);
+  //Limit Switch Latching Variables
+  pressedRear = false;
+  pressedForward = false;
+  //Set initial relay condition to HIGH (Off) for relays
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, HIGH);
+  digitalWrite(IN5, LOW);
+  digitalWrite(IN6, LOW);
+  digitalWrite(IN7, LOW);
+  digitalWrite(IN8, LOW);
 }
