@@ -92,14 +92,20 @@ void startMotor(int direction, int speed) {
     case LEFT:
       roboclaw.ForwardM1(address1, speed);
       roboclaw.ForwardM2(address1, speed);
-      roboclaw.BackwardM1(address2, speed);
-      roboclaw.BackwardM2(address2, speed);
+      roboclaw.ForwardM1(address2, speed/4);
+      roboclaw.ForwardM2(address2, speed/4);
+      // roboclaw.BackwardM1(address2, speed);
+      // roboclaw.BackwardM2(address2, speed);
+      //test radial steering 03282023 Jed P
       break;
     case RIGHT:
       roboclaw.ForwardM1(address2, speed);
       roboclaw.ForwardM2(address2, speed);
-      roboclaw.BackwardM1(address1, speed);
-      roboclaw.BackwardM2(address1, speed);
+      roboclaw.ForwardM1(address1, speed/4);
+      roboclaw.ForwardM2(address1, speed/4);
+      // roboclaw.BackwardM1(address1, speed);
+      // roboclaw.BackwardM2(address1, speed);
+      //test radial steering 03282023 Jed P
       break;
     case STOP:
       roboclaw.ForwardM1(address2, 0);
@@ -368,10 +374,14 @@ void tubeControl(){
   Serial.println("INSIDE TUBECONTROL");  
   switch(tubeState){
     case '0':
-      tubeForward();
+      if(pressedForward == false){
+        tubeForward();
+      }        
       break;
     case '1':
-      tubeBackward();
+      if(pressedRear == false){
+        tubeBackward();
+      }
       break;
     case '2':
       tubeStop();
