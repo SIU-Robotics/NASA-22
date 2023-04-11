@@ -34,6 +34,11 @@
 #define ENABLE_DIG 0x33
 #define DISABLE_DIG 0x34
 
+//Millis start
+const unsigned long event1 = 10000; //10 Seconds
+const unsigned long event2 = 10000; //10 Seconds
+const unsigned long event3 = 10000; //10 Seconds
+
 //Relay pins for auger and drill
 //Tube relays
 int IN1 = 2;
@@ -205,6 +210,28 @@ void receiveData(int byteCount)
       startTilt(incomingData[1]);
       break;
     case AUTO: // not used at the moment
+      unsigned long autoStartTime = 0;
+      unsigned long autoCurrentTime = millis();
+      augerActuatorForward();
+      if( autoCurrentTime - autoStartTime >= event1){ //Event1 is the amount of time till chasis forward needs to stop
+          augerActuatorStop();
+          autoStartTime = autoCurrentTime;
+          drillForward(); //Clockwise
+          tubeForward();
+          if( autoCurrentTime - autoStartTime >= event2){ //Event2 is the amount of time
+              tubeBackward();
+              //drillStop(); If we decide
+              autoStartTime = autoCurrentTime;
+              if( autoCurrentTime - autoStartTime >= event3){ //Event 3 is time
+                  augerActuatorBackward();
+                  autoStartTime = autoCurrentTime;
+                  if( autoCurrentTime - autoStartTime >= event4){
+                      augerActuatorStop();
+                      autoStartTime - autoCurrentTime;
+                  }
+              }
+          }
+      }
       break;
     default:
       break;
