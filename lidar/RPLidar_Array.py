@@ -1,10 +1,19 @@
 from rplidar import RPLidar
-from asyncore import loop
-from logging import exception
-import math, sys
-from re import X
+import math
+import numpy as np
+from matplotlib import pyplot as plt
+import matplotlib.pylab as pylab
 
-lidar = RPLidar('/dev/ttyUSB0')
+params = {'legend.fontsize': 'medium',
+          'figure.figsize': (15, 5),
+         'axes.labelsize': 'x-large',
+         'axes.titlesize':'x-large',
+         'xtick.labelsize':'x-large',
+         'ytick.labelsize':'x-large'}
+
+pylab.rcParams.update(params)
+
+lidar = RPLidar('COM3')
 
 matrix = [[1 for k in range(100)] for l in range(100)] #first range is how many numbers inside arrays, second range is how many arrays
 
@@ -42,11 +51,20 @@ try:
 
             j = j + 1
 
-
-        print('Press Ctrl+C to stop.')
 except KeyboardInterrupt:
-    print('stopping')
+    plt.figure()
+    plt.imshow(matrix)
+    plt.ylim(-0.5, 99.5) #to show no blank spaces
+    plt.xlim(-0.5, 99.5) #to show no blank spaces
 
+    plt.show()
+    print('printing...')
+
+try:
+    while True:
+        continue
+except KeyboardInterrupt:
+    print("stopping")
 lidar.stop()
 lidar.stop_motor()
 lidar.disconnect()
