@@ -5,10 +5,10 @@ import time
 
 class VideoCamera(threading.Thread):
 
-    def __init__(self, num):
+    def __init__(self, index):
         super().__init__()
         self._stop_event = threading.Event()
-        self.video = cv2.VideoCapture(num)
+        self.video = cv2.VideoCapture(index)
         self.video.set(cv2.CAP_PROP_FRAME_WIDTH, 250)
         self.video.set(cv2.CAP_PROP_FRAME_HEIGHT, 200)
         (self.grabbed, self.frame) = self.video.read()
@@ -18,9 +18,9 @@ class VideoCamera(threading.Thread):
         self.video.release()
 
     def get_frame(self):
+        time.sleep(150)
         image = self.frame
         _, jpeg = cv2.imencode('.jpg', image)
-        time.sleep(100)
         return jpeg.tobytes()
 
     def run(self):
@@ -39,4 +39,3 @@ def gen(cam):
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         except Exception as e:
             cam.stop()
-            raise Exception("Frame gen failed: Camera in use")

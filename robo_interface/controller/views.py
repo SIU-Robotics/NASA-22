@@ -9,9 +9,9 @@ from .logic.camera import VideoCamera, gen
 
 # Live camera feed view
 @gzip.gzip_page
-def live_feed_1(request):
+def live_feed(request, index):
     try:
-        camera = VideoCamera(0)
+        camera = VideoCamera(index)
         response = StreamingHttpResponse(gen(camera), content_type="multipart/x-mixed-replace;boundary=frame")
         response['Cache-Control'] = 'no-cache'
         camera.response = response
@@ -20,20 +20,6 @@ def live_feed_1(request):
         response = JsonResponse({"error": e})
         response.status_code = 500
     return response
-
-@gzip.gzip_page
-def live_feed_2(request):
-    try:
-        camera = VideoCamera(2)
-        response = StreamingHttpResponse(gen(camera), content_type="multipart/x-mixed-replace;boundary=frame")
-        response['Cache-Control'] = 'no-cache'
-        camera.response = response
-        camera.start()
-    except Exception as e:
-        response = JsonResponse({"error": e})
-        response.status_code = 500
-    return response
-
 
 # View called by index page using jQuery AJAX
 @csrf_exempt
