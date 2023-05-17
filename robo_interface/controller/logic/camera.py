@@ -5,10 +5,12 @@ import time
 
 class VideoCamera(threading.Thread):
 
-    def __init__(self):
+    def __init__(self, num):
         super().__init__()
         self._stop_event = threading.Event()
-        self.video = cv2.VideoCapture(0)
+        self.video = cv2.VideoCapture(num)
+        self.video.set(cv2.CAP_PROP_FRAME_WIDTH, 250)
+        self.video.set(cv2.CAP_PROP_FRAME_HEIGHT, 200)
         (self.grabbed, self.frame) = self.video.read()
 
     def stop(self):
@@ -18,6 +20,7 @@ class VideoCamera(threading.Thread):
     def get_frame(self):
         image = self.frame
         _, jpeg = cv2.imencode('.jpg', image)
+        time.sleep(100)
         return jpeg.tobytes()
 
     def run(self):
