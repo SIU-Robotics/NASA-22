@@ -279,18 +279,18 @@ Tube directionality function
 */
 void tubeForward(){
   Serial.println("tube forward"); 
-  digitalWrite(IN2, HIGH);  // High must always come before low
-  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);  // High must always come before low
+  digitalWrite(IN1, HIGH);
 }
 void tubeBackward(){
   Serial.println("tube backward");
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
 }
 void tubeStop(){
   Serial.println("tube stop");
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, HIGH);
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
 }
 
 /*
@@ -303,19 +303,19 @@ This relay board has inverted inputs
 */
 void drillForward(){
   Serial.println("drill foward");
-  digitalWrite(IN4, HIGH);    
-  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);    
+  digitalWrite(IN3, HIGH);
   Serial.println("INSIDE DRILL FORWARD");
 }
 void drillBackward(){
   Serial.println("drill foward");
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
 }
 void drillStop(){
   Serial.println("drill stop");
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, HIGH);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
 }
 
 /*
@@ -594,10 +594,10 @@ void setup()
   pressedRear = false;
   pressedForward = false;
   //Set initial relay condition to HIGH (Off) for relays
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, HIGH);
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, HIGH);
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
   digitalWrite(IN5, LOW);
   digitalWrite(IN6, LOW);
   digitalWrite(IN7, LOW);
