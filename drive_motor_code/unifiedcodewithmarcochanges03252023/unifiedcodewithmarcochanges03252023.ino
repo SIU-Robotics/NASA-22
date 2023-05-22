@@ -132,10 +132,14 @@ void startAuger(int command) {
       drillStop();
       break;
     case FORWARD:
-      tubeForward();
+      if (!pressedForward) {
+        tubeForward();
+      }
       break;
     case BACKWARD:
-      tubeBackward();
+      if (!pressedRear) {
+        tubeBackward();
+      }
       break;
     case STOP_MOVE:
       tubeStop();
