@@ -13,99 +13,77 @@ let auto = 0;
 let count = 0;
 
 function keyDownHandler(event) {
-    if (event.keyCode === keys.e) {
-        send_command("movement", "stop");
-        moving = false;
-    }
-    if (moving != event.keyCode) {
-        if (event.keyCode === keys.d) {
+    switch(event.keyCode) {
+        case keys.d:
             send_command("movement", "right");
-            moving = event.keyCode;
-        }
-        else if (event.keyCode === keys.a) {
+            break;
+        case keys.a:
             send_command("movement", "left");
-            moving = event.keyCode;
-        }
-        else if (event.keyCode === keys.s) {
+            break;
+        case keys.s:
             send_command("movement", "backward");
-            moving = event.keyCode;
-        }
-        else if (event.keyCode === keys.w) {
+            break;
+        case keys.w:
             send_command("movement", "forward");
-            moving = event.keyCode;
-        }
-    }
-    if (auger != event.keyCode) {
-        if (event.keyCode === keys.t) {
+            break;
+        case keys.t:
             send_command("auger", "clockwise");
-            auger = event.keyCode;
-        }
-        else if (event.keyCode === keys.g) {
-            send_command("auger", "counterclockwise")
-            auger = event.keyCode;
-        }
-        else if (event.keyCode === keys.y) {
-            send_command("auger", "forward")
-            auger = event.keyCode;
-        }
-        else if (event.keyCode === keys.h) {
-            send_command("auger", "backward")
-            auger = event.keyCode;
-        }
-        else if (event.keyCode === keys.b) {
-            send_command("auger", "stopspin")
-            auger = event.keyCode;
-            
-        }
-        else if (event.keyCode === keys.n) {
+            break;
+        case keys.g:
+            send_command("auger", "counterclockwise");
+            break;
+        case keys.y:
+            send_command("auger", "forward");
+            break;
+        case keys.h:
+            send_command("auger", "backward");
+            break;
+        case keys.b:
+            send_command("auger", "stopspin");
+            break;
+        case keys.n:
             send_command("auger", "stopmove")
-            auger = event.keyCode;
-        }
-    }
-    if (tilt != event.keyCode) {
-        if (event.keyCode === keys.i) {
+            break;
+        case keys.i:
             send_command("tilt", "bodyforward");
-            tilt = event.keyCode;
-        }
-        else if (event.keyCode === keys.k) {
+            break;
+        case keys.k:
             send_command("tilt", "bodybackward");
-            tilt = event.keyCode;
-        }
-        else if (event.keyCode === keys.o) {
+            break;
+        case keys.o:
             send_command("tilt", "augerforward");
-            tilt = event.keyCode;
-        }
-        else if (event.keyCode === keys.l) {
+            break;
+        case keys.l:
             send_command("tilt", "augerbackward");
-            tilt = event.keyCode;
-        }
-        else if (event.keyCode === keys.comma) {
+            break;
+        case keys.comma:
             send_command("tilt", "bodystop");
-            tilt = event.keyCode;
-        }
-        else if (event.keyCode === keys.period) {
+            break;
+        case keys.period:
             send_command("tilt", "augerstop");
-            tilt = event.keyCode;
-        }
+            break;
+        default:
+            break;
+
     }
-    if (auto != event.keyCode) {
-        if (event.keyCode === keys.five) {
-            send_command("auto", "enabledrive");
-            auto = event.keyCode;
-        }
-        else if (event.keyCode === keys.six) {
-            send_command("auto", "disabledrive");
-            auto = event.keyCode;
-        }
-        else if (event.keyCode === keys.nine) {
-            send_command("auto", "enabledig");
-            auto = event.keyCode;
-        }
-        else if (event.keyCode === keys.zero) {
-            send_command("auto", "disabledig");
-            auto = event.keyCode;
-        }
-    }
+    //if (auto != event.keyCode) {
+    //    if (event.keyCode === keys.five) {
+    //        send_command("auto", "enabledrive");
+    //        auto = event.keyCode;
+    //    }
+    //    else if (event.keyCode === keys.six) {
+    //        send_command("auto", "disabledrive");
+    //        auto = event.keyCode;
+    //    }
+    //    else if (event.keyCode === keys.nine) {
+    //        send_command("auto", "enabledig");
+    //        auto = event.keyCode;
+    //    }
+    //    else if (event.keyCode === keys.zero) {
+    //        send_command("auto", "disabledig");
+    //        auto = event.keyCode;
+    //    }
+    //}
 }
   
 function send_command(type, command) {
@@ -138,9 +116,7 @@ function send_command(type, command) {
         success: successful_response,
         error: error_response,
     });
-
 }
-
 
 function successful_response(response) {
     let status = "Executed";

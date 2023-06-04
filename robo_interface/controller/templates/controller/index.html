@@ -15,8 +15,8 @@
                 <tr>
                     <td><h4>Drive Controls</h4></td>
                     <td><h4>Auger Controls</h4></td>
-                    <td><h4>Video Stream <button class="btn btn-secondary" id="camera_btn">Toggle camera index:</button>
-                        <input id="cameraID" type="number" min="0" max="5"></h4></td>
+                  	<td><h4>Tilt Controls</h4></td>
+                  	<td><h4>Sent Commands</h4></td>
                 </tr>
                 <tr>
                     <td>
@@ -39,19 +39,9 @@
                             <li>Stop Spin: B</li>
                             <li>Stop Movement: N</li>
                         </ul>
-                    </td>
-                    <td>
-                        <span id="video"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><h4>Tilt Controls</h4></td>
-                    <td><h4>Autonomy Controls</h4></td>
-                    <td><h4>Sent Commands</h4></td>
-                </tr>
-                <tr>
-                    <td>
-                        <ul>
+                  </td>
+                  	<td>
+                      <ul>
                             <li>Tilt Body Forward: I</li>
                             <li>Tilt Body Backward: K</li>
                             <li>Tilt Auger Forward: O</li>
@@ -59,18 +49,9 @@
                             <li>Stop Body: ,</li>
                             <li>Stop Auger: .</li>
                         </ul>
-                    </td>
-                    <td>
-                        <div>
-                        <ul>
-                            <li>Enable Auto Drive: 5</li>
-                            <li>Stop Auto Drive: 6</li>
-                            <li>Enable Auto Dig: 9</li>
-                            <li>Stop Auto Dig: 0</li>
-                        </ul></div>
-                    </td>
-                    <td>
-                        <div id="table_container">
+                  	</td>
+                  	<td>
+                      <div id="table_container">
                             <table id="commands">
                                 <tr>
                                     <th>##</th>
@@ -80,12 +61,13 @@
                                 </tr>
                             </table>
                         </div>
-
-                    </td>
-                </tr>
+                  </td>
+              </tr>
             </table>
-            
+            <td><h4>Video Stream <button class="btn btn-secondary" id="camera_btn">Toggle camera index:</button>
+                        <input id="cameraID" type="number" min="0" max="5" value="0"><input id="cameraID2" type="number" min="0" max="5" value="2"></</h4></td>
             <br><br>
+            <span id="video"></span>
             <br>
             <div>
             </div>

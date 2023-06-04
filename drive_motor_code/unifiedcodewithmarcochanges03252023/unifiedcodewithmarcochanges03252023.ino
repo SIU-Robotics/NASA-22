@@ -19,6 +19,8 @@
 #define LEFT 0x03
 #define RIGHT 0x04
 #define STOP 0x05
+#define MED_LEFT 0x06
+#define MED_RIGHT 0x07
 #define CLOCKWISE 0x11
 #define COUNTERCLOCKWISE 0x12
 #define STOP_SPIN 0x13
@@ -77,6 +79,18 @@ void startMotor(int direction, int speed) {
   // Determine which direction we will move
   // Then, start the motors in that direction
   switch(direction) {
+    case MED_LEFT:
+      roboclaw.BackwardM1(address1, speed);
+      roboclaw.BackwardM2(address1, speed);
+      roboclaw.ForwardM1(address2, speed*0.25);
+      roboclaw.ForwardM2(address2, speed*0.25);
+      break;
+    case MED_RIGHT:
+      roboclaw.ForwardM1(address1, speed*0.25);
+      roboclaw.ForwardM2(address1, speed*0.25);
+      roboclaw.BackwardM1(address2, speed);
+      roboclaw.BackwardM2(address2, speed);
+      break;
     case FORWARD:
       roboclaw.BackwardM1(address1, speed);
       roboclaw.BackwardM2(address1, speed);
